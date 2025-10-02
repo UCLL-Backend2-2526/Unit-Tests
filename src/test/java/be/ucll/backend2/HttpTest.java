@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.json.JsonCompareMode;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -55,7 +56,7 @@ public class HttpTest {
                           }
                         ]
                         """,
-                        true
+                        JsonCompareMode.STRICT
                 );
     }
 
@@ -72,7 +73,7 @@ public class HttpTest {
                         "name": "Frances McDormand"
                       }
                       """,
-                    true);
+                    JsonCompareMode.STRICT);
     }
 
     @Test
@@ -87,7 +88,7 @@ public class HttpTest {
                         "message": "Actor not found for id: 100"
                       }
                       """,
-                    true);
+                    JsonCompareMode.STRICT);
     }
 
     @Test
@@ -107,7 +108,7 @@ public class HttpTest {
                       {
                         "name": "Jos Bosmans"
                       }
-                      """);
+                      """, JsonCompareMode.LENIENT);
 
         final var jos = actorRepository.findByName("Jos Bosmans");
         Assertions.assertTrue(jos.isPresent());
@@ -142,7 +143,7 @@ public class HttpTest {
                       {
                         "name": "Clement Peerens"
                       }
-                      """);
+                      """, JsonCompareMode.LENIENT);
 
         final var clement = actorRepository.findById(1L);
         Assertions.assertTrue(clement.isPresent());
@@ -192,7 +193,7 @@ public class HttpTest {
                         }
                       ]
                       """,
-                    true);
+                    JsonCompareMode.STRICT);
     }
 
     @Test
@@ -222,7 +223,7 @@ public class HttpTest {
                         }
                       ]
                       """,
-                      true);
+                      JsonCompareMode.STRICT);
     }
 
     @Test
@@ -252,7 +253,7 @@ public class HttpTest {
                         }
                       ]
                       """,
-                      true);
+                      JsonCompareMode.STRICT);
     }
 
     @Test
@@ -262,6 +263,6 @@ public class HttpTest {
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody()
-                .json("[]", true);
+                .json("[]", JsonCompareMode.STRICT);
     }
 }
