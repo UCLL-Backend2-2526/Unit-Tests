@@ -1,6 +1,7 @@
 package be.ucll.backend2;
 
 import be.ucll.backend2.exception.ActorNotFoundException;
+import be.ucll.backend2.model.Actor;
 import be.ucll.backend2.repository.ActorRepository;
 import be.ucll.backend2.service.ActorService;
 import org.junit.jupiter.api.Assertions;
@@ -50,10 +51,27 @@ public class ActorServiceTest {
         Mockito.verify(actorRepository).deleteById(1L);
     }
 
-    // Oefening:
-    // - Implementeer service test(s) voor getActorById
-    // - Implementeer service test(s) voor createActor
-    // - Implementeer service test(s) voor getAllActors
-    // - Implementeer service test(s) voor updateActor
-    // Let op: zorg ervoor dat elk geval getest is (happy cases en unhappy cases!)
+    @Test
+    public void givenActorDoesNotExistYet_whenCreateActorIsCalled_thenActorIsSaved() {
+        // Mock save methode
+        Mockito
+                .when(actorRepository.save(Mockito.any(Actor.class)))
+                .thenAnswer(invocation -> {
+                    var actor = (Actor) invocation.getArguments()[0];
+                    actor.setId(1L);
+                    return actor;
+                });
+
+        var actor = new Actor("Tom Hanks");
+
+        // When
+        var returnedActor = actorService.createActor(actor);
+
+        // Kijk na of de acteur die we terug hebben gekregen de juiste data bevat
+        Assertions.assertEquals(1L, returnedActor.getId());
+        Assertions.assertEquals("Tom Hanks", returnedActor.getName());
+
+        // Kijk na of de save methode gecalld is
+        Mockito.verify(actorRepository).save(Mockito.any(Actor.class));
+    }
 }
