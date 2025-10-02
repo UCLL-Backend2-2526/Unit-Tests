@@ -34,7 +34,7 @@ public class HttpTest {
     @Test
     public void given3ActorsInDb_whenInvokingGetActor_then3ActorsAreReturned() {
         client.get()
-                .uri("/api/v1/actor")
+                .uri("/api/v1/actors")
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody()
@@ -62,7 +62,7 @@ public class HttpTest {
     @Test
     public void givenFrancesMcDormandInDb_whenInvokingGetActor1_thenFrancesMcDormandIsReturned() {
         client.get()
-                .uri("/api/v1/actor/1")
+                .uri("/api/v1/actors/1")
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody()
@@ -78,7 +78,7 @@ public class HttpTest {
     @Test
     public void givenActorNotInDb_whenInvokingGetActor100_then404IsReturned() {
         client.get()
-                .uri("/api/v1/actor/100")
+                .uri("/api/v1/actors/100")
                 .exchange()
                 .expectStatus().isNotFound()
                 .expectBody()
@@ -93,7 +93,7 @@ public class HttpTest {
     @Test
     public void givenNoActorJosBosmans_whenInvokingPostActor_thenActorJosBosmansIsSavedInDb() {
         client.post()
-                .uri("/api/v1/actor")
+                .uri("/api/v1/actors")
                 .header("Content-Type", "application/json")
                 .bodyValue("""
                            {
@@ -117,7 +117,7 @@ public class HttpTest {
     @Test
     public void givenActorFrancesMcDormand_whenInvokingDelete1_thenFrancesMcDormandIsRemovedFromDb() {
         client.delete()
-                .uri("/api/v1/actor/1")
+                .uri("/api/v1/actors/1")
                 .exchange()
                 .expectStatus().is2xxSuccessful();
 
@@ -128,7 +128,7 @@ public class HttpTest {
     @Test
     public void givenActorFrancedMcDormand_whenInvokingPut1_thenActorIsUpdatedInDb() {
         client.put()
-                .uri("/api/v1/actor/1")
+                .uri("/api/v1/actors/1")
                 .header("Content-Type", "application/json")
                 .bodyValue("""
                            {
@@ -152,7 +152,7 @@ public class HttpTest {
     @Test
     public void given2MoviesInDb_whenInvokingGetMovie_then2MoviesAreReturned() {
         client.get()
-                .uri("/api/v1/movie")
+                .uri("/api/v1/movies")
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody()
@@ -198,7 +198,7 @@ public class HttpTest {
     @Test
     public void given2MoviesInDb_whenInvokingGetMoviesAfter2000_then1MovieIsReturned() {
         client.get()
-                .uri("/api/v1/movie?startYear=2000")
+                .uri("/api/v1/movies?startYear=2000")
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody()
@@ -228,7 +228,7 @@ public class HttpTest {
     @Test
     public void given2MoviesInDb_whenInvokingGetMoviesBefore2000_then1MovieIsReturned() {
         client.get()
-                .uri("/api/v1/movie?endYear=2000")
+                .uri("/api/v1/movies?endYear=2000")
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody()
@@ -258,7 +258,7 @@ public class HttpTest {
     @Test
     public void given2MoviesInDb_whenInvokingGetMoviesBetween2000And2010_thenNoMoviesAreReturned() {
         client.get()
-                .uri("/api/v1/movie?startYear=2000&endYear=2010")
+                .uri("/api/v1/movies?startYear=2000&endYear=2010")
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody()
